@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATAVA CV Studio - Model 1 Spacing Fixed</title>
+    <title>ATAVA CV Studio - Framed Model</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; text-transform: uppercase; }
@@ -27,34 +27,58 @@
         .btn-print { background: #1b365d; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; box-shadow: 0 4px 6px rgba(27, 54, 93, 0.2); }
         .btn-print:hover { background: #11223b; }
 
-        /* A4 CANVAS BASE */
-        .cv-a4-page { width: 210mm; height: 297mm; background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden; flex-shrink: 0; display: flex; }
+        /* A4 CANVAS BASE WITH SIDE SPACING & OUTSIDE BORDER */
+        .cv-a4-page { 
+            width: 210mm; 
+            height: 297mm; 
+            background: #ffffff; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+            position: relative; 
+            overflow: hidden; 
+            flex-shrink: 0; 
+            display: flex; 
+            padding: 12mm 10mm; /* Symmetrical Top-Bottom & Side Spacing */
+        }
+
+        /* FOUR SIDE OUTER BORDER FRAME */
+        .cv-border-frame {
+            position: absolute;
+            top: 5mm;
+            bottom: 5mm;
+            left: 5mm;
+            right: 5mm;
+            border: 2px solid #1b365d !important; /* Elegant Navy Border around 4 sides */
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            pointer-events: none; /* Layoutil thadasam varathirikan */
+            z-index: 10;
+        }
 
         /* CLASSIC BLUE RIBBON DESIGN */
-        .m1-sidebar { width: 36%; background: #b9cde5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; height: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 15px 15px 15px; }
-        .m1-photo-banner { background: #1b365d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 112%; height: 200px; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 15px; position: relative; clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%); margin-bottom: 25px; }
-        .m1-photo-frame { width: 130px; height: 155px; border: 4px solid #ffffff; border-radius: 50% / 45%; overflow: hidden; background: #e2e8f0; display: flex; justify-content: center; align-items: center; }
+        .m1-sidebar { width: 36%; background: #b9cde5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; height: 100%; display: flex; flex-direction: column; align-items: center; padding: 15px; position: relative; }
+        .m1-photo-banner { background: #1b365d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 115%; height: 180px; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 15px; position: relative; clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%); margin-bottom: 20px; margin-top: -15px; }
+        .m1-photo-frame { width: 120px; height: 145px; border: 4px solid #ffffff; border-radius: 50% / 45%; overflow: hidden; background: #e2e8f0; display: flex; justify-content: center; align-items: center; }
         .m1-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
         
-        .m1-contact-list { width: 100%; margin-bottom: 20px; }
-        .m1-contact-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: #1b365d; font-size: 0.85rem; font-weight: bold; }
-        .m1-sidebar-title { width: 100%; font-size: 0.9rem; font-weight: bold; color: #1b365d; border-bottom: 2px solid #1b365d; padding-bottom: 3px; margin-bottom: 10px; margin-top: 5px; }
-        .m1-details-table { width: 100%; margin-bottom: 22px; border-collapse: collapse; }
-        .m1-details-table td { font-size: 0.76rem; font-weight: bold; color: #1b365d; padding: 5px 2px; }
-        .m1-details-table td.lbl { width: 35%; }
+        .m1-contact-list { width: 100%; margin-bottom: 15px; }
+        .m1-contact-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: #1b365d; font-size: 0.8rem; font-weight: bold; }
+        .m1-sidebar-title { width: 100%; font-size: 0.85rem; font-weight: bold; color: #1b365d; border-bottom: 2px solid #1b365d; padding-bottom: 3px; margin-bottom: 8px; margin-top: 5px; }
+        .m1-details-table { width: 100%; margin-bottom: 15px; border-collapse: collapse; }
+        .m1-details-table td { font-size: 0.73rem; font-weight: bold; color: #1b365d; padding: 4px 2px; }
+        .m1-details-table td.lbl { width: 38%; }
         
-        .m1-main { width: 64%; height: 100%; padding: 35px 30px; display: flex; flex-direction: column; }
-        .m1-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1b365d; padding-bottom: 12px; margin-bottom: 25px; }
-        .m1-name { font-size: 1.6rem; font-weight: bold; color: #1b365d; }
+        .m1-main { width: 64%; height: 100%; padding: 10px 0 10px 25px; display: flex; flex-direction: column; }
+        .m1-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1b365d; padding-bottom: 10px; margin-bottom: 20px; }
+        .m1-name { font-size: 1.5rem; font-weight: bold; color: #1b365d; }
         
-        .m1-section { margin-bottom: 24px; } /* Increased from 16px to adjust bottom space */
-        .m1-section-title { font-size: 0.95rem; font-weight: bold; color: #1b365d; border-bottom: 1px solid #1b365d; padding-bottom: 4px; margin-bottom: 12px; }
+        .m1-section { margin-bottom: 20px; }
+        .m1-section-title { font-size: 0.9rem; font-weight: bold; color: #1b365d; border-bottom: 1px solid #1b365d; padding-bottom: 4px; margin-bottom: 10px; }
         .m1-bullets { list-style: none; padding-left: 5px; }
-        .m1-bullets li { font-size: 0.85rem; color: #000; margin-bottom: 8px; position: relative; padding-left: 15px; font-weight: bold; line-height: 1.4; }
-        .m1-bullets li::before { content: "•"; position: absolute; left: 0; top: 0; font-size: 1.1rem; }
+        .m1-bullets li { font-size: 0.8rem; color: #000; margin-bottom: 7px; position: relative; padding-left: 15px; font-weight: bold; line-height: 1.4; }
+        .m1-bullets li::before { content: "•"; position: absolute; left: 0; top: 0; font-size: 1rem; }
 
-        .dec-box { margin-top: auto; padding-top: 20px; }
-        .sig-row { display: flex; justify-content: flex-end; margin-top: 20px; font-size: 0.85rem; font-weight: bold; }
+        .dec-box { margin-top: auto; padding-top: 15px; }
+        .sig-row { display: flex; justify-content: flex-end; margin-top: 15px; font-size: 0.8rem; font-weight: bold; }
 
         @media print {
             body { background: none; height: auto; overflow: visible; }
@@ -67,12 +91,10 @@
 </head>
 <body>
 
-    <!-- LEFT INPUT PANEL -->
     <div class="editor-side">
         <div class="studio-title"><i class="fa-solid fa-file-invoice"></i> ATAVA CV Studio</div>
-        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px; font-weight: bold;">Classic Navy Ribbon Template</p>
+        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px; font-weight: bold;">Classic Framed Template</p>
 
-        <!-- Section 1: Header Specs -->
         <div class="section-group">
             <h3><i class="fa-solid fa-user"></i> Name & Photo</h3>
             <div class="form-control">
@@ -85,7 +107,6 @@
             </div>
         </div>
 
-        <!-- Section 2: Contact Data -->
         <div class="section-group">
             <h3><i class="fa-solid fa-address-book"></i> Contact Details</h3>
             <div class="form-row">
@@ -98,7 +119,6 @@
             </div>
         </div>
 
-        <!-- Section 3: Core Personal Matrices -->
         <div class="section-group">
             <h3><i class="fa-solid fa-id-card"></i> Personal Details</h3>
             <div class="form-row">
@@ -111,7 +131,6 @@
             </div>
         </div>
 
-        <!-- Section 4: Document Matrix Details -->
         <div class="section-group">
             <h3><i class="fa-solid fa-passport"></i> Passport & License Details</h3>
             <div class="form-row">
@@ -128,7 +147,6 @@
             <div class="form-control"><label>Lic Expiry Date</label><input type="text" id="inLicExpiry" value="09/11/2029" oninput="syncData()"></div>
         </div>
 
-        <!-- Section 5: Languages Line Splitter -->
         <div class="section-group">
             <h3><i class="fa-solid fa-language"></i> Languages Known</h3>
             <div class="form-control">
@@ -136,7 +154,6 @@
             </div>
         </div>
 
-        <!-- Section 6: Right Side Content Fields -->
         <div class="section-group">
             <h3><i class="fa-solid fa-bullseye"></i> Career Objective</h3>
             <div class="form-control">
@@ -152,9 +169,9 @@
         </div>
 
         <div class="section-group">
-            <h3><i class="fa-solid fa-briefcase"></i> Work Experience (One per line)</h3>
+            <h3><i class="fa-solid fa-briefcase"></i> Work Experience</h3>
             <div class="form-control">
-                <textarea id="inExp" style="height: 60px;" oninput="syncData()">2 years working experience as a Driver of Trucker in UAE</textarea>
+                <textarea id="inExp" oninput="syncData()">2 years working experience as a Driver of Trucker in UAE</textarea>
             </div>
         </div>
 
@@ -188,13 +205,14 @@ Good observation and active listening</textarea>
         <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> Print CV / Save as PDF</button>
     </div>
 
-    <!-- RIGHT LIVE PREVIEW AREA -->
     <div class="preview-side">
 
         <div class="cv-a4-page">
+            <div class="cv-border-frame"></div>
+
             <div class="m1-sidebar">
                 <div class="m1-photo-banner">
-                    <div class="m1-photo-frame slot-photo"><i class="fa-solid fa-user" style="font-size:4rem; color:#94a3b8;"></i></div>
+                    <div class="m1-photo-frame slot-photo"><i class="fa-solid fa-user" style="font-size:3.5rem; color:#94a3b8;"></i></div>
                 </div>
                 <div class="m1-contact-list">
                     <div class="m1-contact-row"><i class="fa-solid fa-phone"></i> <span class="slot-phone"></span></div>
@@ -216,7 +234,7 @@ Good observation and active listening</textarea>
                     <tr><td class="lbl">Expiry Date</td><td>:</td><td class="slot-passexpiry"></td></tr>
                 </table>
                 <div class="m1-sidebar-title">License Details</div>
-                <div style="font-size:0.7rem; font-weight:bold; margin-bottom:6px; color:#1b365d;" class="slot-lictitle"></div>
+                <div style="font-size:0.68rem; font-weight:bold; margin-bottom:5px; color:#1b365d;" class="slot-lictitle"></div>
                 <table class="m1-details-table">
                     <tr><td class="lbl">License No</td><td style="width:5%">:</td><td class="slot-licno"></td></tr>
                     <tr><td class="lbl">Issue Date</td><td>:</td><td class="slot-licissue"></td></tr>
@@ -228,15 +246,15 @@ Good observation and active listening</textarea>
             <div class="m1-main">
                 <div class="m1-header">
                     <div class="m1-name slot-name"></div>
-                    <div style="font-size:2rem; font-weight:900; opacity:0.15; font-style:italic; color:#1b365d;">CV</div>
+                    <div style="font-size:1.8rem; font-weight:900; opacity:0.15; font-style:italic; color:#1b365d;">CV</div>
                 </div>
                 <div class="m1-section">
                     <div class="m1-section-title">Objective</div>
-                    <div class="m1-bullets slot-obj" style="list-style:none; padding-left:0; text-align:justify; font-size:0.85rem; font-weight:bold; line-height:1.5;"></div>
+                    <div class="m1-bullets slot-obj" style="list-style:none; padding-left:0; text-align:justify; font-size:0.8rem; font-weight:bold; line-height:1.4;"></div>
                 </div>
                 <div class="m1-section">
                     <div class="m1-section-title">Educational Qualification</div>
-                    <div class="m1-bullets slot-edu" style="list-style:none; padding-left:0; font-size:0.85rem; font-weight:bold;"></div>
+                    <div class="m1-bullets slot-edu" style="list-style:none; padding-left:0; font-size:0.8rem; font-weight:bold;"></div>
                 </div>
                 <div class="m1-section">
                     <div class="m1-section-title">Work Experience</div>
@@ -252,7 +270,7 @@ Good observation and active listening</textarea>
                 </div>
                 <div class="m1-section dec-box">
                     <div class="m1-section-title">Declaration</div>
-                    <div style="font-size:0.85rem; line-height:1.5; text-align:justify; font-weight:bold; margin-bottom: 5px;">I hereby declare that the information furnished above is true to the best of my knowledge and belief.</div>
+                    <div style="font-size:0.8rem; line-height:1.4; text-align:justify; font-weight:bold; margin-bottom: 5px;">I hereby declare that the information furnished above is true to the best of my knowledge and belief.</div>
                     <div class="sig-row slot-name"></div>
                 </div>
             </div>
@@ -260,7 +278,6 @@ Good observation and active listening</textarea>
 
     </div>
 
-    <!-- CODE CONTROLLER ENGINE -->
     <script>
         let savedPhotoData = "";
 
