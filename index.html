@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATAVA CV Studio Pro - Fixed Engine</title>
+    <title>ATAVA CV Studio - Model 1 Only</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; text-transform: uppercase; }
@@ -14,102 +14,45 @@
         .editor-side * { text-transform: none; }
         .preview-side { width: 65%; background: #525659; display: flex; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 40px 20px; height: 100vh; }
 
-        .studio-title { font-size: 1.4rem; color: #0f172a; font-weight: 800; margin-bottom: 5px; border-bottom: 2px solid #2563eb; padding-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .studio-title { font-size: 1.4rem; color: #0f172a; font-weight: 800; margin-bottom: 5px; border-bottom: 2px solid #1b365d; padding-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         .section-group { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
-        .section-group h3 { font-size: 0.95rem; color: #2563eb; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .section-group h3 { font-size: 0.95rem; color: #1b365d; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
         
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
         .form-control { margin-bottom: 10px; }
         .form-control label { display: block; font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 4px; }
-        .form-control input, .form-control textarea, .form-control select { width: 100%; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.9rem; background: #fff; }
+        .form-control input, .form-control textarea { width: 100%; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.9rem; background: #fff; }
         .form-control textarea { resize: vertical; height: 60px; font-family: inherit; }
 
-        .btn-print { background: #22c55e; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2); }
-        .btn-print:hover { background: #16a34a; }
-        .model-selector-card { background: #eff6ff; border: 2px solid #bfdbfe; }
+        .btn-print { background: #1b365d; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; box-shadow: 0 4px 6px rgba(27, 54, 93, 0.2); }
+        .btn-print:hover { background: #11223b; }
 
         /* A4 CANVAS BASE */
-        .cv-a4-page { width: 210mm; height: 297mm; background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden; flex-shrink: 0; display: none; }
-        .cv-a4-page.active-model { display: block; }
+        .cv-a4-page { width: 210mm; height: 297mm; background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden; flex-shrink: 0; display: flex; }
 
-        /* =======================================================
-           MODEL 1: CLASSIC BLUE RIBBON
-           ======================================================= */
-        #model-classic { display: none; }
-        #model-classic.active-model { display: flex; }
+        /* CLASSIC BLUE RIBBON DESIGN */
         .m1-sidebar { width: 36%; background: #b9cde5; height: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 15px 15px 15px; }
         .m1-photo-banner { background: #1b365d; width: 112%; height: 200px; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 15px; position: relative; clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%); margin-bottom: 25px; }
         .m1-photo-frame { width: 130px; height: 155px; border: 4px solid #ffffff; border-radius: 50% / 45%; overflow: hidden; background: #e2e8f0; display: flex; justify-content: center; align-items: center; }
         .m1-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+        
         .m1-contact-list { width: 100%; margin-bottom: 20px; }
         .m1-contact-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #1b365d; font-size: 0.85rem; font-weight: bold; }
         .m1-sidebar-title { width: 100%; font-size: 0.9rem; font-weight: bold; color: #1b365d; border-bottom: 2px solid #1b365d; padding-bottom: 3px; margin-bottom: 8px; }
         .m1-details-table { width: 100%; margin-bottom: 18px; border-collapse: collapse; }
         .m1-details-table td { font-size: 0.76rem; font-weight: bold; color: #1b365d; padding: 3px 2px; }
         .m1-details-table td.lbl { width: 35%; }
+        
         .m1-main { width: 64%; height: 100%; padding: 30px 25px; display: flex; flex-direction: column; }
         .m1-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1b365d; padding-bottom: 12px; margin-bottom: 20px; }
         .m1-name { font-size: 1.6rem; font-weight: bold; color: #1b365d; }
+        
         .m1-section { margin-bottom: 16px; }
         .m1-section-title { font-size: 0.95rem; font-weight: bold; color: #1b365d; border-bottom: 1px solid #1b365d; padding-bottom: 3px; margin-bottom: 8px; }
         .m1-bullets { list-style: none; padding-left: 5px; }
         .m1-bullets li { font-size: 0.82rem; color: #000; margin-bottom: 5px; position: relative; padding-left: 15px; font-weight: bold; }
         .m1-bullets li::before { content: "•"; position: absolute; left: 0; top: 0; font-size: 1.1rem; }
 
-        /* =======================================================
-           MODEL 2: MODERN YELLOW & DARK GREY
-           ======================================================= */
-        #model-yellow { display: none; }
-        #model-yellow.active-model { display: flex; }
-        .m2-sidebar { width: 35%; background: #1e2530; height: 100%; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; color: #ffffff; }
-        .m2-photo-frame { width: 150px; height: 150px; border: 5px solid #fec107; border-radius: 50%; overflow: hidden; background: #e2e8f0; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
-        .m2-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
-        .m2-name { font-size: 1.8rem; font-weight: bold; color: #fec107; text-align: center; margin-bottom: 5px; }
-        .m2-sub { font-size: 0.9rem; color: #a0aec0; margin-bottom: 30px; letter-spacing: 1px; font-weight: bold; }
-        .m2-sidebar-title { width: 100%; font-size: 0.95rem; font-weight: bold; color: #fec107; border-bottom: 1px solid #4a5568; padding-bottom: 5px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .m2-contact-list { width: 100%; margin-bottom: 25px; }
-        .m2-contact-row { font-size: 0.8rem; color: #e2e8f0; margin-bottom: 12px; line-height: 1.4; word-break: break-all; font-weight: bold; }
-        .m2-contact-row span { display: block; color: #a0aec0; font-size: 0.75rem; text-transform: none; }
-        .m2-bullets { list-style: none; }
-        .m2-bullets li { font-size: 0.8rem; color: #e2e8f0; margin-bottom: 6px; font-weight: bold; }
-        
-        .m2-main { width: 65%; height: 100%; padding: 40px 30px; display: flex; flex-direction: column; background: #ffffff; color: #1a202c; }
-        .m2-section { margin-bottom: 22px; }
-        .m2-section-title { font-size: 1.1rem; font-weight: bold; color: #1a202c; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .m2-section-title i { background: #fec107; color: #1e2530; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
-        .m2-section-title::after { content: ""; flex: 1; height: 2px; background: #e2e8f0; }
-        .m2-body-text { font-size: 0.85rem; color: #4a5568; line-height: 1.5; font-weight: bold; text-align: justify; }
-        .m2-main-bullets { list-style: none; padding-left: 5px; }
-        .m2-main-bullets li { font-size: 0.85rem; color: #4a5568; margin-bottom: 8px; position: relative; padding-left: 20px; font-weight: bold; }
-        .m2-main-bullets li::before { content: "●"; position: absolute; left: 0; top: 0; color: #fec107; font-size: 0.8rem; }
-
-        /* =======================================================
-           MODEL 3: NIYAS PLAIN CLEAN DESIGN
-           ======================================================= */
-        #model-niyas { display: none; }
-        #model-niyas.active-model { display: block; padding: 40px; background: #ffffff; }
-        .m3-top-grid { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .m3-top-left { width: 65%; }
-        .m3-top-left h1 { font-size: 1.9rem; color: #2b6cb0; font-weight: bold; margin-bottom: 12px; }
-        .m3-top-contact { font-size: 0.82rem; color: #2d3748; font-weight: bold; line-height: 1.6; }
-        .m3-top-contact div { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
-        .m3-photo-frame { width: 125px; height: 150px; border: 2px solid #2b6cb0; border-radius: 50% / 45%; overflow: hidden; display: flex; justify-content: center; align-items: center; }
-        .m3-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .m3-split-box { display: flex; gap: 35px; width: 100%; }
-        .m3-col-left { width: 52%; }
-        .m3-col-right { width: 48%; }
-        .m3-section { margin-bottom: 18px; }
-        .m3-section-title { font-size: 0.95rem; font-weight: bold; color: #2b6cb0; border-bottom: 2px solid #2d3748; padding-bottom: 4px; margin-bottom: 10px; }
-        .m3-body-text { font-size: 0.82rem; color: #000; line-height: 1.4; font-weight: bold; text-align: justify; }
-        .m3-bullets { list-style: none; padding-left: 2px; }
-        .m3-bullets li { font-size: 0.82rem; color: #000; margin-bottom: 6px; position: relative; padding-left: 15px; font-weight: bold; }
-        .m3-bullets li::before { content: "•"; position: absolute; left: 0; top: 0; font-size: 1.1rem; font-weight: bold; }
-        .m3-table { width: 100%; border-collapse: collapse; }
-        .m3-table td { font-size: 0.8rem; font-weight: bold; padding: 4px 0; color: #000; }
-        .m3-table td.lbl { width: 40%; color: #2d3748; }
-
-        /* UNIVERSAL ACCENTS */
         .dec-box { margin-top: auto; padding-top: 15px; }
         .sig-row { display: flex; justify-content: flex-end; margin-top: 15px; font-size: 0.82rem; font-weight: bold; }
 
@@ -126,20 +69,8 @@
 
     <!-- LEFT INPUT PANEL -->
     <div class="editor-side">
-        <div class="studio-title"><i class="fa-solid fa-file-invoice"></i> ATAVA CV Studio Pro</div>
-        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px; font-weight: bold;">Select Model and fill details.</p>
-
-        <!-- Dynamic Model Selector Box -->
-        <div class="section-group model-selector-card">
-            <div class="form-control" style="margin-bottom:0;">
-                <label style="color: #1d4ed8; font-weight: bold;"><i class="fa-solid fa-palette"></i> CHOOSE CV TEMPLATE (മോഡൽ മാറ്റുക)</label>
-                <select id="modelSelector" onchange="switchModel(this.value)" style="font-weight: bold; border: 2px solid #3b82f6;">
-                    <option value="model-classic">Model 1: Classic Navy Ribbon (Original)</option>
-                    <option value="model-yellow">Model 2: Modern Yellow & Dark Grey</option>
-                    <option value="model-niyas">Model 3: Plain Clean Design (Niyas Model)</option>
-                </select>
-            </div>
-        </div>
+        <div class="studio-title"><i class="fa-solid fa-file-invoice"></i> ATAVA CV Studio</div>
+        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px; font-weight: bold;">Classic Navy Ribbon Template</p>
 
         <!-- Section 1: Header Specs -->
         <div class="section-group">
@@ -234,7 +165,13 @@
 Navigation
 Alertness and awareness of surroundings
 Good judgment and decision making
-Excellent coordination and control over the vehicle</textarea>
+Excellent coordination and control over the vehicle
+Patience and calm under pressure
+Ability to anticipate and react to potential hazards
+Defensive driving techniques
+Proper use of mirrors and signals
+Efficient use of brakes, accelerator, and steering
+Ability to Parallel Park and maneuver in tight spaces</textarea>
             </div>
         </div>
 
@@ -243,7 +180,8 @@ Excellent coordination and control over the vehicle</textarea>
             <div class="form-control">
                 <textarea id="inStrengths" style="height: 80px;" oninput="syncData()">Hardworking, confident and result oriented approach
 Passionate for seeking in my performance
-Believe in team work and performance</textarea>
+Believe in team work and performance
+Good observation and active listening</textarea>
             </div>
         </div>
 
@@ -253,10 +191,7 @@ Believe in team work and performance</textarea>
     <!-- RIGHT LIVE PREVIEW AREA -->
     <div class="preview-side">
 
-        <!-- =======================================================
-           MODEL 1 CANVAS: CLASSIC BLUE RIBBON
-           ======================================================= -->
-        <div class="cv-a4-page active-model" id="model-classic">
+        <div class="cv-a4-page">
             <div class="m1-sidebar">
                 <div class="m1-photo-banner">
                     <div class="m1-photo-frame slot-photo"><i class="fa-solid fa-user" style="font-size:4rem; color:#94a3b8;"></i></div>
@@ -281,7 +216,7 @@ Believe in team work and performance</textarea>
                     <tr><td class="lbl">Expiry Date</td><td>:</td><td class="slot-passexpiry"></td></tr>
                 </table>
                 <div class="m1-sidebar-title">License Details</div>
-                <div style="font-size:0.7rem; font-weight:bold; margin-bottom:4px;" class="slot-lictitle"></div>
+                <div style="font-size:0.7rem; font-weight:bold; margin-bottom:4px; color:#1b365d;" class="slot-lictitle"></div>
                 <table class="m1-details-table">
                     <tr><td class="lbl">License No</td><td style="width:5%">:</td><td class="slot-licno"></td></tr>
                     <tr><td class="lbl">Issue Date</td><td>:</td><td class="slot-licissue"></td></tr>
@@ -293,15 +228,15 @@ Believe in team work and performance</textarea>
             <div class="m1-main">
                 <div class="m1-header">
                     <div class="m1-name slot-name"></div>
-                    <div style="font-size:2rem; font-weight:900; opacity:0.2; font-style:italic;">CV</div>
+                    <div style="font-size:2rem; font-weight:900; opacity:0.15; font-style:italic; color:#1b365d;">CV</div>
                 </div>
                 <div class="m1-section">
                     <div class="m1-section-title">Objective</div>
-                    <div class="m1-bullets slot-obj" style="list-style:none; padding-left:0;"></div>
+                    <div class="m1-bullets slot-obj" style="list-style:none; padding-left:0; text-align:justify; font-size:0.82rem; font-weight:bold; line-height:1.4;"></div>
                 </div>
                 <div class="m1-section">
                     <div class="m1-section-title">Educational Qualification</div>
-                    <div class="m1-bullets slot-edu" style="list-style:none; padding-left:0;"></div>
+                    <div class="m1-bullets slot-edu" style="list-style:none; padding-left:0; font-size:0.82rem; font-weight:bold;"></div>
                 </div>
                 <div class="m1-section">
                     <div class="m1-section-title">Work Experience</div>
@@ -323,159 +258,11 @@ Believe in team work and performance</textarea>
             </div>
         </div>
 
-        <!-- =======================================================
-           MODEL 2 CANVAS: MODERN YELLOW & DARK GREY
-           ======================================================= -->
-        <div class="cv-a4-page" id="model-yellow">
-            <div class="m2-sidebar">
-                <div class="m2-photo-frame slot-photo"><i class="fa-solid fa-user" style="font-size:4rem; color:#94a3b8;"></i></div>
-                <div class="m2-name slot-name"></div>
-                <div class="m2-sub">CURRICULUM VITAE</div>
-                
-                <div class="m2-sidebar-title"><i class="fa-solid fa-phone"></i> Contact</div>
-                <div class="m2-contact-list">
-                    <div class="m2-contact-row"><span>Phone:</span><span class="slot-phone" style="color:#fff; font-size:0.8rem;"></span></div>
-                    <div class="m2-contact-row"><span>WhatsApp:</span><span class="slot-whatsapp" style="color:#fff; font-size:0.8rem;"></span></div>
-                    <div class="m2-contact-row"><span>Email:</span><span class="slot-email" style="color:#fff; font-size:0.8rem; text-transform:none;"></span></div>
-                    <div class="m2-contact-row"><span>Location:</span><span class="slot-loc" style="color:#fff; font-size:0.8rem;"></span></div>
-                </div>
-
-                <div class="m2-sidebar-title"><i class="fa-solid fa-language"></i> Languages</div>
-                <ul class="m2-bullets slot-lang"></ul>
-            </div>
-            <div class="m2-main">
-                <div class="m2-section">
-                    <div class="m2-section-title"><i><i class="fa-solid fa-user-tie" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Profile Objective</div>
-                    <div class="m2-body-text slot-obj"></div>
-                </div>
-                <div class="m2-section">
-                    <div class="m2-section-title"><i><i class="fa-solid fa-briefcase" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Experience</div>
-                    <ul class="m2-main-bullets slot-exp"></ul>
-                </div>
-                <div class="m2-section">
-                    <div class="m2-section-title"><i><i class="fa-solid fa-graduation-cap" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Education</div>
-                    <div class="m2-body-text slot-edu"></div>
-                </div>
-                <div class="m2-section">
-                    <div class="m2-section-title"><i><i class="fa-solid fa-gear" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Skills</div>
-                    <ul class="m2-main-bullets slot-skills"></ul>
-                </div>
-                <div class="m2-section">
-                    <div class="m2-section-title"><i><i class="fa-solid fa-bolt" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Key Strengths</div>
-                    <ul class="m2-main-bullets slot-strengths"></ul>
-                </div>
-                <div class="m2-section">
-                    <div class="m2-section-title"><i><i class="fa-solid fa-id-card" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Personal Metrics</div>
-                    <table style="width:100%; font-size:0.8rem; font-weight:bold; color:#4a5568;">
-                        <tr><td style="padding:3px 0; width:30%;">DOB</td><td style="width:5%">:</td><td class="slot-dob"></td><td style="width:30%;">PASSPORT NO</td><td style="width:5%">:</td><td class="slot-passno"></td></tr>
-                        <tr><td style="padding:3px 0;">GENDER</td><td>:</td><td class="slot-sex"></td><td>PASSPORT ISSUE</td><td>:</td><td class="slot-passissue"></td></tr>
-                        <tr><td style="padding:3px 0;">NATIONALITY</td><td>:</td><td class="slot-nation"></td><td>PASSPORT EXPIRY</td><td>:</td><td class="slot-passexpiry"></td></tr>
-                        <tr><td style="padding:3px 0;">VISA STATUS</td><td>:</td><td class="slot-visa"></td><td>LICENSE NO</td><td>:</td><td class="slot-licno"></td></tr>
-                    </table>
-                </div>
-                <div class="m2-section dec-box" style="margin-top:auto;">
-                    <div style="font-size:0.78rem; color:#718096; text-align:justify; font-weight:bold; border-top:1px solid #e2e8f0; padding-top:10px;">I hereby declare that the information furnished above is true to the best of my knowledge and belief.</div>
-                    <div class="sig-row slot-name" style="color:#1a202c;"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- =======================================================
-           MODEL 3 CANVAS: NIYAS CLEAN DESIGN
-           ======================================================= -->
-        <div class="cv-a4-page" id="model-niyas">
-            <div class="m3-top-grid">
-                <div class="m3-top-left">
-                    <h1 class="slot-name"></h1>
-                    <div class="m3-top-contact">
-                        <div><i class="fa-solid fa-mobile-screen-button"></i> <span class="slot-phone"></span></div>
-                        <div><i class="fa-brands fa-whatsapp" style="color:#22c55e;"></i> <span class="slot-whatsapp"></span></div>
-                        <div><i class="fa-solid fa-envelope"></i> <span class="slot-email" style="text-transform:none;"></span></div>
-                    </div>
-                </div>
-                <div class="m3-photo-frame slot-photo"><i class="fa-solid fa-user" style="font-size:4rem; color:#94a3b8;"></i></div>
-            </div>
-
-            <div class="m3-split-box">
-                <div class="m3-col-left">
-                    <div class="m3-section">
-                        <div class="m3-section-title">OBJECTIVE</div>
-                        <div class="m3-body-text slot-obj"></div>
-                    </div>
-                    <div class="m3-section">
-                        <div class="m3-section-title">WORK EXPERIENCE</div>
-                        <ul class="m3-bullets slot-exp"></ul>
-                    </div>
-                    <div class="m3-section">
-                        <div class="m3-section-title">EDUCATIONAL QUALIFICATION</div>
-                        <div class="m3-body-text slot-edu"></div>
-                    </div>
-                    <div class="m3-section">
-                        <div class="m3-section-title">KEY STRENGTHS</div>
-                        <ul class="m3-bullets slot-strengths"></ul>
-                    </div>
-                    <div class="m3-section">
-                        <div class="m3-section-title">LICENSE DETAILS</div>
-                        <div style="font-size:0.8rem; font-weight:bold; margin-bottom:5px; color:#2b6cb0;" class="slot-lictitle"></div>
-                        <table class="m3-table">
-                            <tr><td class="lbl">LICENSE NO</td><td style="width:5%">:</td><td class="slot-licno"></td></tr>
-                            <tr><td class="lbl">DATE OF ISSUE</td><td>:</td><td class="slot-licissue"></td></tr>
-                            <tr><td class="lbl">DATE OF EXPIRE</td><td>:</td><td class="slot-licexpiry"></td></tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="m3-col-right">
-                    <div class="m3-section">
-                        <div class="m3-section-title">PERSONAL SKILLS</div>
-                        <ul class="m3-bullets slot-skills"></ul>
-                    </div>
-                    <div class="m3-section">
-                        <div class="m3-section-title">LANGUAGES KNOWN</div>
-                        <ul class="m3-bullets slot-lang" style="list-style:none; padding-left:0;"></ul>
-                    </div>
-                    <div class="m3-section">
-                        <div class="m3-section-title">PERSONAL DETAILS</div>
-                        <table class="m3-table">
-                            <tr><td class="lbl">DOB</td><td style="width:5%">:</td><td class="slot-dob"></td></tr>
-                            <tr><td class="lbl">SEX</td><td>:</td><td class="slot-sex"></td></tr>
-                            <tr><td class="lbl">NATIONALITY</td><td>:</td><td class="slot-nation"></td></tr>
-                            <tr><td class="lbl">MARITAL STATUS</td><td>:</td><td>SINGLE</td></tr>
-                        </table>
-                    </div>
-                    <div class="m3-section">
-                        <div class="m3-section-title">PASSPORT DETAILS</div>
-                        <table class="m3-table">
-                            <tr><td class="lbl">PASSPORT NO</td><td style="width:5%">:</td><td class="slot-passno"></td></tr>
-                            <tr><td class="lbl">DATE OF ISSUE</td><td>:</td><td class="slot-passissue"></td></tr>
-                            <tr><td class="lbl">DATE OF EXPIRE</td><td>:</td><td class="slot-passexpiry"></td></tr>
-                            <tr><td class="lbl">VISA STATUS</td><td>:</td><td class="slot-visa"></td></tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="m3-section dec-box" style="margin-top:20px;">
-                <div class="m3-section-title">DECLARATION</div>
-                <div class="m3-body-text">I hereby declare that the information furnished above is true to the best of my knowledge and belief.</div>
-                <div class="sig-row slot-name" style="color:#000;"></div>
-            </div>
-        </div>
-
     </div>
 
     <!-- CODE CONTROLLER ENGINE -->
     <script>
         let savedPhotoData = "";
-
-        function switchModel(modelId) {
-            // Hide all models first cleanly
-            document.querySelectorAll('.cv-a4-page').forEach(page => {
-                page.classList.remove('active-model');
-            });
-            // Show only selected model container
-            document.getElementById(modelId).classList.add('active-model');
-        }
 
         function syncData() {
             const name = document.getElementById('inName').value.toUpperCase();
@@ -501,7 +288,7 @@ Believe in team work and performance</textarea>
             const objText = document.getElementById('inObj').value.toUpperCase();
             const eduText = document.getElementById('inEdu').value.toUpperCase();
 
-            // Injecting to all active slots cleanly using classes
+            // Injecting data safely to slots
             fillSlots('.slot-name', name);
             fillSlots('.slot-phone', phone);
             fillSlots('.slot-whatsapp', whatsapp);
@@ -567,7 +354,7 @@ Believe in team work and performance</textarea>
             }
         }
 
-        // Boot flow elements execution
+        // Boot flow execution
         syncData();
     </script>
 </body>
