@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATAVA CV Studio - Model 1 Fixed</title>
+    <title>ATAVA CV Studio - Model 1 Spacing Fixed</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; text-transform: uppercase; }
@@ -31,30 +31,30 @@
         .cv-a4-page { width: 210mm; height: 297mm; background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden; flex-shrink: 0; display: flex; }
 
         /* CLASSIC BLUE RIBBON DESIGN */
-        .m1-sidebar { width: 36%; background: #b9cde5; height: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 15px 15px 15px; }
-        .m1-photo-banner { background: #1b365d; width: 112%; height: 200px; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 15px; position: relative; clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%); margin-bottom: 25px; }
+        .m1-sidebar { width: 36%; background: #b9cde5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; height: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 15px 15px 15px; }
+        .m1-photo-banner { background: #1b365d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 112%; height: 200px; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 15px; position: relative; clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%); margin-bottom: 25px; }
         .m1-photo-frame { width: 130px; height: 155px; border: 4px solid #ffffff; border-radius: 50% / 45%; overflow: hidden; background: #e2e8f0; display: flex; justify-content: center; align-items: center; }
         .m1-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
         
         .m1-contact-list { width: 100%; margin-bottom: 20px; }
-        .m1-contact-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #1b365d; font-size: 0.85rem; font-weight: bold; }
-        .m1-sidebar-title { width: 100%; font-size: 0.9rem; font-weight: bold; color: #1b365d; border-bottom: 2px solid #1b365d; padding-bottom: 3px; margin-bottom: 8px; }
-        .m1-details-table { width: 100%; margin-bottom: 18px; border-collapse: collapse; }
-        .m1-details-table td { font-size: 0.76rem; font-weight: bold; color: #1b365d; padding: 3px 2px; }
+        .m1-contact-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: #1b365d; font-size: 0.85rem; font-weight: bold; }
+        .m1-sidebar-title { width: 100%; font-size: 0.9rem; font-weight: bold; color: #1b365d; border-bottom: 2px solid #1b365d; padding-bottom: 3px; margin-bottom: 10px; margin-top: 5px; }
+        .m1-details-table { width: 100%; margin-bottom: 22px; border-collapse: collapse; }
+        .m1-details-table td { font-size: 0.76rem; font-weight: bold; color: #1b365d; padding: 5px 2px; }
         .m1-details-table td.lbl { width: 35%; }
         
-        .m1-main { width: 64%; height: 100%; padding: 30px 25px; display: flex; flex-direction: column; }
-        .m1-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1b365d; padding-bottom: 12px; margin-bottom: 20px; }
+        .m1-main { width: 64%; height: 100%; padding: 35px 30px; display: flex; flex-direction: column; }
+        .m1-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1b365d; padding-bottom: 12px; margin-bottom: 25px; }
         .m1-name { font-size: 1.6rem; font-weight: bold; color: #1b365d; }
         
-        .m1-section { margin-bottom: 16px; }
-        .m1-section-title { font-size: 0.95rem; font-weight: bold; color: #1b365d; border-bottom: 1px solid #1b365d; padding-bottom: 3px; margin-bottom: 8px; }
+        .m1-section { margin-bottom: 24px; } /* Increased from 16px to adjust bottom space */
+        .m1-section-title { font-size: 0.95rem; font-weight: bold; color: #1b365d; border-bottom: 1px solid #1b365d; padding-bottom: 4px; margin-bottom: 12px; }
         .m1-bullets { list-style: none; padding-left: 5px; }
-        .m1-bullets li { font-size: 0.82rem; color: #000; margin-bottom: 5px; position: relative; padding-left: 15px; font-weight: bold; }
+        .m1-bullets li { font-size: 0.85rem; color: #000; margin-bottom: 8px; position: relative; padding-left: 15px; font-weight: bold; line-height: 1.4; }
         .m1-bullets li::before { content: "•"; position: absolute; left: 0; top: 0; font-size: 1.1rem; }
 
-        .dec-box { margin-top: auto; padding-top: 15px; }
-        .sig-row { display: flex; justify-content: flex-end; margin-top: 15px; font-size: 0.82rem; font-weight: bold; }
+        .dec-box { margin-top: auto; padding-top: 20px; }
+        .sig-row { display: flex; justify-content: flex-end; margin-top: 20px; font-size: 0.85rem; font-weight: bold; }
 
         @media print {
             body { background: none; height: auto; overflow: visible; }
@@ -216,7 +216,7 @@ Good observation and active listening</textarea>
                     <tr><td class="lbl">Expiry Date</td><td>:</td><td class="slot-passexpiry"></td></tr>
                 </table>
                 <div class="m1-sidebar-title">License Details</div>
-                <div style="font-size:0.7rem; font-weight:bold; margin-bottom:4px; color:#1b365d;" class="slot-lictitle"></div>
+                <div style="font-size:0.7rem; font-weight:bold; margin-bottom:6px; color:#1b365d;" class="slot-lictitle"></div>
                 <table class="m1-details-table">
                     <tr><td class="lbl">License No</td><td style="width:5%">:</td><td class="slot-licno"></td></tr>
                     <tr><td class="lbl">Issue Date</td><td>:</td><td class="slot-licissue"></td></tr>
@@ -232,11 +232,11 @@ Good observation and active listening</textarea>
                 </div>
                 <div class="m1-section">
                     <div class="m1-section-title">Objective</div>
-                    <div class="m1-bullets slot-obj" style="list-style:none; padding-left:0; text-align:justify; font-size:0.82rem; font-weight:bold; line-height:1.4;"></div>
+                    <div class="m1-bullets slot-obj" style="list-style:none; padding-left:0; text-align:justify; font-size:0.85rem; font-weight:bold; line-height:1.5;"></div>
                 </div>
                 <div class="m1-section">
                     <div class="m1-section-title">Educational Qualification</div>
-                    <div class="m1-bullets slot-edu" style="list-style:none; padding-left:0; font-size:0.82rem; font-weight:bold;"></div>
+                    <div class="m1-bullets slot-edu" style="list-style:none; padding-left:0; font-size:0.85rem; font-weight:bold;"></div>
                 </div>
                 <div class="m1-section">
                     <div class="m1-section-title">Work Experience</div>
@@ -252,7 +252,7 @@ Good observation and active listening</textarea>
                 </div>
                 <div class="m1-section dec-box">
                     <div class="m1-section-title">Declaration</div>
-                    <div style="font-size:0.82rem; line-height:1.4; text-align:justify; font-weight:bold;">I hereby declare that the information furnished above is true to the best of my knowledge and belief.</div>
+                    <div style="font-size:0.85rem; line-height:1.5; text-align:justify; font-weight:bold; margin-bottom: 5px;">I hereby declare that the information furnished above is true to the best of my knowledge and belief.</div>
                     <div class="sig-row slot-name"></div>
                 </div>
             </div>
@@ -309,7 +309,7 @@ Good observation and active listening</textarea>
             fillSlots('.slot-obj', objText);
             fillSlots('.slot-edu', eduText);
 
-            // Lists Parser Matrix (FIXED: Using standard document.querySelector inside)
+            // Lists Parser Matrix
             parseToBullets('#inLang', '.slot-lang', true);
             parseToBullets('#inExp', '.slot-exp', false);
             parseToBullets('#inSkills', '.slot-skills', false);
