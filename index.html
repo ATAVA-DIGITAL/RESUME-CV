@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATAVA CV Studio Pro - Multi-Model Engine</title>
+    <title>ATAVA CV Studio Pro - Fixed Engine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
-        body { background: #f0f2f5; color: #333; display: flex; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; text-transform: uppercase; }
+        body { background: #ffffff; color: #333; display: flex; height: 100vh; overflow: hidden; }
 
         /* STUDIO WORKSPACE LAYOUT */
-        .editor-side { width: 35%; background: #ffffff; box-shadow: 4px 0 15px rgba(0,0,0,0.1); padding: 20px; overflow-y: auto; height: 100vh; }
+        .editor-side { width: 35%; background: #ffffff; box-shadow: 4px 0 15px rgba(0,0,0,0.1); padding: 20px; overflow-y: auto; height: 100vh; text-transform: none; }
+        .editor-side * { text-transform: none; }
         .preview-side { width: 65%; background: #525659; display: flex; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 40px 20px; height: 100vh; }
 
         .studio-title { font-size: 1.4rem; color: #0f172a; font-weight: 800; margin-bottom: 5px; border-bottom: 2px solid #2563eb; padding-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         .section-group { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
-        .section-group h3 { font-size: 0.95rem; color: #2563eb; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .section-group h3 { font-size: 0.95rem; color: #2563eb; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
         
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
         .form-control { margin-bottom: 10px; }
@@ -25,101 +26,96 @@
 
         .btn-print { background: #22c55e; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2); }
         .btn-print:hover { background: #16a34a; }
-
-        /* THE CHANGER DROPDOWN CARD */
         .model-selector-card { background: #eff6ff; border: 2px solid #bfdbfe; }
 
-        /* A4 SIZE CANVAS SPECIFICATIONS */
-        .cv-a4-page { 
-            width: 210mm; 
-            height: 297mm; 
-            background: #ffffff; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
-            display: flex;
-            position: relative;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
+        /* A4 CANVAS BASE */
+        .cv-a4-page { width: 210mm; height: 297mm; background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden; flex-shrink: 0; display: none; }
+        .cv-a4-page.active-model { display: block; }
 
         /* =======================================================
-           MODEL 1: CLASSIC BLUE RIBBON (YOUR ORIGINAL DESIGN)
+           MODEL 1: CLASSIC BLUE RIBBON
            ======================================================= */
-        .cv-a4-page.model-classic .cv-sidebar { width: 36%; background: #b9cde5; height: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 15px 15px 15px; }
-        .cv-a4-page.model-classic .photo-banner-wrapper { background: #1b365d; width: 112%; height: 200px; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 15px; position: relative; clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%); margin-bottom: 25px; }
-        .cv-a4-page.model-classic .photo-oval-frame { width: 130px; height: 155px; border: 4px solid #ffffff; border-radius: 50% / 45%; overflow: hidden; background: #e2e8f0; display: flex; justify-content: center; align-items: center; }
-        .cv-a4-page.model-classic .photo-oval-frame img { width: 100%; height: 100%; object-fit: cover; }
-        .cv-a4-page.model-classic .contact-info-list { width: 100%; margin-bottom: 20px; }
-        .cv-a4-page.model-classic .contact-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #1b365d; font-size: 0.85rem; font-weight: bold; }
-        .cv-a4-page.model-classic .sidebar-section-title { width: 100%; font-size: 0.9rem; font-weight: bold; color: #1b365d; border-bottom: 2px solid #1b365d; padding-bottom: 3px; margin-bottom: 8px; text-transform: uppercase; }
-        .cv-a4-page.model-classic .grid-details-table { width: 100%; margin-bottom: 18px; border-collapse: collapse; }
-        .cv-a4-page.model-classic .grid-details-table td { font-size: 0.76rem; font-weight: bold; color: #1b365d; padding: 3px 2px; }
-        .cv-a4-page.model-classic .grid-details-table td.val-label { width: 35%; text-transform: uppercase; }
-        .cv-a4-page.model-classic .cv-main-body { width: 64%; height: 100%; padding: 30px 25px; display: flex; flex-direction: column; }
-        .cv-a4-page.model-classic .main-top-accent-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1b365d; padding-bottom: 12px; margin-bottom: 20px; }
-        .cv-a4-page.model-classic .candidate-name { font-size: 1.6rem; font-weight: bold; color: #1b365d; text-transform: uppercase; }
-        .cv-a4-page.model-classic .body-section { margin-bottom: 16px; }
-        .cv-a4-page.model-classic .body-section-title { font-size: 0.95rem; font-weight: bold; color: #1b365d; border-bottom: 1px solid #1b365d; padding-bottom: 3px; margin-bottom: 8px; text-transform: uppercase; }
-        .cv-a4-page.model-classic .bullet-list { list-style: none; padding-left: 5px; }
-        .cv-a4-page.model-classic .bullet-list li { font-size: 0.82rem; color: #000; margin-bottom: 5px; position: relative; padding-left: 15px; font-weight: 500; }
-        .cv-a4-page.model-classic .bullet-list li::before { content: "•"; position: absolute; left: 0; top: 0; font-size: 1.1rem; }
+        #model-classic { display: none; }
+        #model-classic.active-model { display: flex; }
+        .m1-sidebar { width: 36%; background: #b9cde5; height: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 15px 15px 15px; }
+        .m1-photo-banner { background: #1b365d; width: 112%; height: 200px; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 15px; position: relative; clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%); margin-bottom: 25px; }
+        .m1-photo-frame { width: 130px; height: 155px; border: 4px solid #ffffff; border-radius: 50% / 45%; overflow: hidden; background: #e2e8f0; display: flex; justify-content: center; align-items: center; }
+        .m1-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .m1-contact-list { width: 100%; margin-bottom: 20px; }
+        .m1-contact-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #1b365d; font-size: 0.85rem; font-weight: bold; }
+        .m1-sidebar-title { width: 100%; font-size: 0.9rem; font-weight: bold; color: #1b365d; border-bottom: 2px solid #1b365d; padding-bottom: 3px; margin-bottom: 8px; }
+        .m1-details-table { width: 100%; margin-bottom: 18px; border-collapse: collapse; }
+        .m1-details-table td { font-size: 0.76rem; font-weight: bold; color: #1b365d; padding: 3px 2px; }
+        .m1-details-table td.lbl { width: 35%; }
+        .m1-main { width: 64%; height: 100%; padding: 30px 25px; display: flex; flex-direction: column; }
+        .m1-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1b365d; padding-bottom: 12px; margin-bottom: 20px; }
+        .m1-name { font-size: 1.6rem; font-weight: bold; color: #1b365d; }
+        .m1-section { margin-bottom: 16px; }
+        .m1-section-title { font-size: 0.95rem; font-weight: bold; color: #1b365d; border-bottom: 1px solid #1b365d; padding-bottom: 3px; margin-bottom: 8px; }
+        .m1-bullets { list-style: none; padding-left: 5px; }
+        .m1-bullets li { font-size: 0.82rem; color: #000; margin-bottom: 5px; position: relative; padding-left: 15px; font-weight: bold; }
+        .m1-bullets li::before { content: "•"; position: absolute; left: 0; top: 0; font-size: 1.1rem; }
 
         /* =======================================================
-           MODEL 2: MODERN CHARCOAL (TOP BLOCK ACCENT ENGINE)
+           MODEL 2: MODERN YELLOW & DARK GREY
            ======================================================= */
-        .cv-a4-page.model-charcoal { flex-direction: column; padding: 0; }
-        .cv-a4-page.model-charcoal .photo-banner-wrapper { display: none; }
-        .cv-a4-page.model-charcoal .top-corporate-header { background: #2d3748; color: white; padding: 30px; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 140px; }
-        .cv-a4-page.model-charcoal .candidate-name { font-size: 1.8rem; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
-        .cv-a4-page.model-charcoal .corporate-sub { font-size: 0.9rem; color: #cbd5e1; font-weight: bold; margin-top: 5px; }
-        .cv-a4-page.model-charcoal .photo-oval-frame { width: 90px; height: 90px; border-radius: 50%; border: 3px solid #fff; overflow: hidden; background: #fff; }
-        .cv-a4-page.model-charcoal .photo-oval-frame img { width: 100%; height: 100%; object-fit: cover; }
+        #model-yellow { display: none; }
+        #model-yellow.active-model { display: flex; }
+        .m2-sidebar { width: 35%; background: #1e2530; height: 100%; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; color: #ffffff; }
+        .m2-photo-frame { width: 150px; height: 150px; border: 5px solid #fec107; border-radius: 50%; overflow: hidden; background: #e2e8f0; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
+        .m2-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .m2-name { font-size: 1.8rem; font-weight: bold; color: #fec107; text-align: center; margin-bottom: 5px; }
+        .m2-sub { font-size: 0.9rem; color: #a0aec0; margin-bottom: 30px; letter-spacing: 1px; font-weight: bold; }
+        .m2-sidebar-title { width: 100%; font-size: 0.95rem; font-weight: bold; color: #fec107; border-bottom: 1px solid #4a5568; padding-bottom: 5px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .m2-contact-list { width: 100%; margin-bottom: 25px; }
+        .m2-contact-row { font-size: 0.8rem; color: #e2e8f0; margin-bottom: 12px; line-height: 1.4; word-break: break-all; font-weight: bold; }
+        .m2-contact-row span { display: block; color: #a0aec0; font-size: 0.75rem; text-transform: none; }
+        .m2-bullets { list-style: none; }
+        .m2-bullets li { font-size: 0.8rem; color: #e2e8f0; margin-bottom: 6px; font-weight: bold; }
         
-        .cv-a4-page.model-charcoal .split-container { display: flex; width: 100%; height: calc(100% - 140px); }
-        .cv-a4-page.model-charcoal .cv-sidebar { width: 33%; background: #f1f5f9; height: 100%; padding: 20px 15px; border-right: 1px solid #e2e8f0; }
-        .cv-a4-page.model-charcoal .cv-main-body { width: 67%; height: 100%; padding: 25px; display: flex; flex-direction: column; overflow: hidden; }
-        .cv-a4-page.model-charcoal .sidebar-section-title { font-size: 0.85rem; font-weight: 800; color: #1e293b; border-left: 4px solid #4a5568; padding-left: 8px; margin-bottom: 10px; text-transform: uppercase; background: #e2e8f0; padding-top: 4px; padding-bottom: 4px; }
-        .cv-a4-page.model-charcoal .contact-info-list { margin-bottom: 20px; }
-        .cv-a4-page.model-charcoal .contact-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 0.78rem; font-weight: bold; color: #4a5568; }
-        .cv-a4-page.model-charcoal .grid-details-table { width: 100%; margin-bottom: 15px; }
-        .cv-a4-page.model-charcoal .grid-details-table td { font-size: 0.72rem; font-weight: 700; color: #334155; padding: 3px 0; }
-        .cv-a4-page.model-charcoal .grid-details-table td.val-label { width: 40%; color: #64748b; }
-        
-        .cv-a4-page.model-charcoal .body-section-title { font-size: 0.95rem; font-weight: 800; color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px; margin-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; justify-content: dashed; }
-        .cv-a4-page.model-charcoal .body-section { margin-bottom: 15px; }
-        .cv-a4-page.model-charcoal .bullet-list li { font-size: 0.8rem; color: #334155; margin-bottom: 5px; list-style-type: square; margin-left: 15px; font-weight: 500; }
+        .m2-main { width: 65%; height: 100%; padding: 40px 30px; display: flex; flex-direction: column; background: #ffffff; color: #1a202c; }
+        .m2-section { margin-bottom: 22px; }
+        .m2-section-title { font-size: 1.1rem; font-weight: bold; color: #1a202c; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .m2-section-title i { background: #fec107; color: #1e2530; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+        .m2-section-title::after { content: ""; flex: 1; height: 2px; background: #e2e8f0; }
+        .m2-body-text { font-size: 0.85rem; color: #4a5568; line-height: 1.5; font-weight: bold; text-align: justify; }
+        .m2-main-bullets { list-style: none; padding-left: 5px; }
+        .m2-main-bullets li { font-size: 0.85rem; color: #4a5568; margin-bottom: 8px; position: relative; padding-left: 20px; font-weight: bold; }
+        .m2-main-bullets li::before { content: "●"; position: absolute; left: 0; top: 0; color: #fec107; font-size: 0.8rem; }
 
         /* =======================================================
-           MODEL 3: EXECUTIVE EMERALD (PURE MINIMAL METRICS)
+           MODEL 3: NIYAS PLAIN CLEAN DESIGN
            ======================================================= */
-        .cv-a4-page.model-emerald { flex-direction: column; padding: 40px; background: #fff; }
-        .cv-a4-page.model-emerald .photo-banner-wrapper, .cv-a4-page.model-emerald .top-corporate-header { display: none; }
-        .cv-a4-page.model-emerald .emerald-top-grid { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #065f46; padding-bottom: 15px; margin-bottom: 20px; }
-        .cv-a4-page.model-emerald .candidate-name { font-size: 2rem; font-weight: bold; color: #065f46; text-transform: uppercase; }
-        .cv-a4-page.model-emerald .photo-oval-frame { width: 85px; height: 105px; border-radius: 4px; border: 2px solid #065f46; overflow: hidden; }
-        .cv-a4-page.model-emerald .photo-oval-frame img { width: 100%; height: 100%; object-fit: cover; }
+        #model-niyas { display: none; }
+        #model-niyas.active-model { display: block; padding: 40px; background: #ffffff; }
+        .m3-top-grid { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .m3-top-left { width: 65%; }
+        .m3-top-left h1 { font-size: 1.9rem; color: #2b6cb0; font-weight: bold; margin-bottom: 12px; }
+        .m3-top-contact { font-size: 0.82rem; color: #2d3748; font-weight: bold; line-height: 1.6; }
+        .m3-top-contact div { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+        .m3-photo-frame { width: 125px; height: 150px; border: 2px solid #2b6cb0; border-radius: 50% / 45%; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .m3-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
         
-        .cv-a4-page.model-emerald .split-container { display: flex; gap: 30px; width: 100%; height: calc(100% - 130px); }
-        .cv-a4-page.model-emerald .cv-sidebar { width: 35%; background: none; padding: 0; }
-        .cv-a4-page.model-emerald .cv-main-body { width: 65%; padding: 0; }
-        .cv-a4-page.model-emerald .sidebar-section-title { font-size: 0.9rem; font-weight: bold; color: #065f46; border-bottom: 1px dashed #065f46; padding-bottom: 4px; margin-bottom: 10px; text-transform: uppercase; }
-        .cv-a4-page.model-emerald .contact-row { font-size: 0.8rem; color: #111827; margin-bottom: 8px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .cv-a4-page.model-emerald .grid-details-table td { font-size: 0.75rem; font-weight: 600; padding: 4px 0; color: #111827; }
-        .cv-a4-page.model-emerald .grid-details-table td.val-label { color: #065f46; text-transform: uppercase; font-size: 0.7rem; }
-        
-        .cv-a4-page.model-emerald .body-section-title { font-size: 0.95rem; font-weight: bold; color: #065f46; border-bottom: 1px solid #065f46; padding-bottom: 3px; margin-bottom: 8px; text-transform: uppercase; }
-        .cv-a4-page.model-emerald .body-section { margin-bottom: 16px; }
-        .cv-a4-page.model-emerald .bullet-list li { font-size: 0.82rem; color: #111827; margin-bottom: 5px; list-style-position: inside; font-weight: 500; }
+        .m3-split-box { display: flex; gap: 35px; width: 100%; }
+        .m3-col-left { width: 52%; }
+        .m3-col-right { width: 48%; }
+        .m3-section { margin-bottom: 18px; }
+        .m3-section-title { font-size: 0.95rem; font-weight: bold; color: #2b6cb0; border-bottom: 2px solid #2d3748; padding-bottom: 4px; margin-bottom: 10px; }
+        .m3-body-text { font-size: 0.82rem; color: #000; line-height: 1.4; font-weight: bold; text-align: justify; }
+        .m3-bullets { list-style: none; padding-left: 2px; }
+        .m3-bullets li { font-size: 0.82rem; color: #000; margin-bottom: 6px; position: relative; padding-left: 15px; font-weight: bold; }
+        .m3-bullets li::before { content: "•"; position: absolute; left: 0; top: 0; font-size: 1.1rem; font-weight: bold; }
+        .m3-table { width: 100%; border-collapse: collapse; }
+        .m3-table td { font-size: 0.8rem; font-weight: bold; padding: 4px 0; color: #000; }
+        .m3-table td.lbl { width: 40%; color: #2d3748; }
 
-        /* UNIVERSAL ELEMENTS ACROSS MODELS */
-        .body-text-block { font-size: 0.82rem; color: #000; line-height: 1.4; text-align: justify; font-weight: 500; }
-        .lang-list { list-style: none; padding-left: 2px; }
-        .lang-list li { font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; text-transform: uppercase; }
-        .declaration-box { margin-top: auto; padding-top: 15px; }
-        .signature-row { display: flex; justify-content: flex-end; margin-top: 20px; font-size: 0.82rem; font-weight: bold; text-transform: uppercase; color: inherit; }
+        /* UNIVERSAL ACCENTS */
+        .dec-box { margin-top: auto; padding-top: 15px; }
+        .sig-row { display: flex; justify-content: flex-end; margin-top: 15px; font-size: 0.82rem; font-weight: bold; }
 
         @media print {
             body { background: none; height: auto; overflow: visible; }
-            .editor-side, .btn-print { display: none !important; }
+            .editor-side { display: none !important; }
             .preview-side { width: 100%; padding: 0; background: none; height: auto; overflow: visible; }
             .cv-a4-page { box-shadow: none; margin: 0; page-break-after: avoid; page-break-inside: avoid; }
             @page { size: A4; margin: 0; }
@@ -128,19 +124,19 @@
 </head>
 <body>
 
-    <!-- LEFT WORKSPACE INTERFACE PANEL -->
+    <!-- LEFT INPUT PANEL -->
     <div class="editor-side">
         <div class="studio-title"><i class="fa-solid fa-file-invoice"></i> ATAVA CV Studio Pro</div>
-        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px; font-weight: bold;">Select Model and enter parameters dynamically.</p>
+        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px; font-weight: bold;">Select Model and fill details.</p>
 
         <!-- Dynamic Model Selector Box -->
         <div class="section-group model-selector-card">
             <div class="form-control" style="margin-bottom:0;">
-                <label style="color: #1d4ed8; font-size:0.85rem;"><i class="fa-solid fa-palette"></i> CHOOSE CV MODEL (ഡിസൈൻ മാറ്റുക)</label>
-                <select id="modelSelector" onchange="changeCVModel(this.value)" style="font-weight: bold; border: 2px solid #3b82f6;">
+                <label style="color: #1d4ed8; font-weight: bold;"><i class="fa-solid fa-palette"></i> CHOOSE CV TEMPLATE (മോഡൽ മാറ്റുക)</label>
+                <select id="modelSelector" onchange="switchModel(this.value)" style="font-weight: bold; border: 2px solid #3b82f6;">
                     <option value="model-classic">Model 1: Classic Navy Ribbon (Original)</option>
-                    <option value="model-charcoal">Model 2: Modern Charcoal Header</option>
-                    <option value="model-emerald">Model 3: Executive Emerald Minimal</option>
+                    <option value="model-yellow">Model 2: Modern Yellow & Dark Grey</option>
+                    <option value="model-niyas">Model 3: Plain Clean Design (Niyas Model)</option>
                 </select>
             </div>
         </div>
@@ -150,11 +146,11 @@
             <h3><i class="fa-solid fa-user"></i> Name & Photo</h3>
             <div class="form-control">
                 <label>Full Name</label>
-                <input type="text" id="inName" value="MUHAMMAD AJMAL NAZIR" oninput="updateCV()">
+                <input type="text" id="inName" value="MUHAMMAD AJMAL NAZIR" oninput="syncData()">
             </div>
             <div class="form-control">
                 <label>Photo Upload</label>
-                <input type="file" id="inPhoto" accept="image/*" onchange="previewImage(this)">
+                <input type="file" id="inPhoto" accept="image/*" onchange="processPhoto(this)">
             </div>
         </div>
 
@@ -162,12 +158,12 @@
         <div class="section-group">
             <h3><i class="fa-solid fa-address-book"></i> Contact Details</h3>
             <div class="form-row">
-                <div class="form-control"><label>Phone Number</label><input type="text" id="inPhone" value="+971-588 055814" oninput="updateCV()"></div>
-                <div class="form-control"><label>WhatsApp</label><input type="text" id="inWhatsapp" value="+971-588 055814" oninput="updateCV()"></div>
+                <div class="form-control"><label>Phone Number</label><input type="text" id="inPhone" value="+971-588 055814" oninput="syncData()"></div>
+                <div class="form-control"><label>WhatsApp</label><input type="text" id="inWhatsapp" value="+971-588 055814" oninput="syncData()"></div>
             </div>
             <div class="form-row">
-                <div class="form-control"><label>Email Address</label><input type="text" id="inEmail" value="ajmal631822@gmail.com" oninput="updateCV()"></div>
-                <div class="form-control"><label>Location</label><input type="text" id="inLoc" value="UMM AL QUWAIN" oninput="updateCV()"></div>
+                <div class="form-control"><label>Email Address</label><input type="text" id="inEmail" value="ajmal631822@gmail.com" oninput="syncData()"></div>
+                <div class="form-control"><label>Location</label><input type="text" id="inLoc" value="UMM AL QUWAIN" oninput="syncData()"></div>
             </div>
         </div>
 
@@ -175,12 +171,12 @@
         <div class="section-group">
             <h3><i class="fa-solid fa-id-card"></i> Personal Details</h3>
             <div class="form-row">
-                <div class="form-control"><label>Date of Birth</label><input type="text" id="inDob" value="17/08/2021" oninput="updateCV()"></div>
-                <div class="form-control"><label>Gender</label><input type="text" id="inSex" value="MALE" oninput="updateCV()"></div>
+                <div class="form-control"><label>Date of Birth</label><input type="text" id="inDob" value="17/08/2021" oninput="syncData()"></div>
+                <div class="form-control"><label>Gender</label><input type="text" id="inSex" value="MALE" oninput="syncData()"></div>
             </div>
             <div class="form-row">
-                <div class="form-control"><label>Nationality</label><input type="text" id="inNation" value="PAKISTAN" oninput="updateCV()"></div>
-                <div class="form-control"><label>Visa Status</label><input type="text" id="inVisa" value="EMPLOYMENT" oninput="updateCV()"></div>
+                <div class="form-control"><label>Nationality</label><input type="text" id="inNation" value="PAKISTAN" oninput="syncData()"></div>
+                <div class="form-control"><label>Visa Status</label><input type="text" id="inVisa" value="EMPLOYMENT" oninput="syncData()"></div>
             </div>
         </div>
 
@@ -188,24 +184,24 @@
         <div class="section-group">
             <h3><i class="fa-solid fa-passport"></i> Passport & License Details</h3>
             <div class="form-row">
-                <div class="form-control"><label>Passport No</label><input type="text" id="inPassNo" value="MT9821411" oninput="updateCV()"></div>
-                <div class="form-control"><label>Pass Issue Date</label><input type="text" id="inPassIssue" value="21/10/2021" oninput="updateCV()"></div>
+                <div class="form-control"><label>Passport No</label><input type="text" id="inPassNo" value="MT9821411" oninput="syncData()"></div>
+                <div class="form-control"><label>Pass Issue Date</label><input type="text" id="inPassIssue" value="21/10/2021" oninput="syncData()"></div>
             </div>
-            <div class="form-control"><label>Pass Expiry Date</label><input type="text" id="inPassExpiry" value="20/10/2026" oninput="updateCV()"></div>
+            <div class="form-control"><label>Pass Expiry Date</label><input type="text" id="inPassExpiry" value="20/10/2026" oninput="syncData()"></div>
             <hr style="margin: 10px 0; border: 0; border-top: 1px solid #cbd5e1;">
-            <div class="form-control"><label>License Title Group</label><input type="text" id="inLicTitle" value="UMM AL QUWAIN - LIGHT VEHICLE" oninput="updateCV()"></div>
+            <div class="form-control"><label>License Title Group</label><input type="text" id="inLicTitle" value="UMM AL QUWAIN - LIGHT VEHICLE" oninput="syncData()"></div>
             <div class="form-row">
-                <div class="form-control"><label>License No</label><input type="text" id="inLicNo" value="82190" oninput="updateCV()"></div>
-                <div class="form-control"><label>Lic Issue Date</label><input type="text" id="inLicIssue" value="11/11/2022" oninput="updateCV()"></div>
+                <div class="form-control"><label>License No</label><input type="text" id="inLicNo" value="82190" oninput="syncData()"></div>
+                <div class="form-control"><label>Lic Issue Date</label><input type="text" id="inLicIssue" value="11/11/2022" oninput="syncData()"></div>
             </div>
-            <div class="form-control"><label>Lic Expiry Date</label><input type="text" id="inLicExpiry" value="09/11/2029" oninput="updateCV()"></div>
+            <div class="form-control"><label>Lic Expiry Date</label><input type="text" id="inLicExpiry" value="09/11/2029" oninput="syncData()"></div>
         </div>
 
         <!-- Section 5: Languages Line Splitter -->
         <div class="section-group">
             <h3><i class="fa-solid fa-language"></i> Languages Known</h3>
             <div class="form-control">
-                <textarea id="inLang" oninput="updateCV()">HINDI, URDU, ENGLISH, ARABIC</textarea>
+                <textarea id="inLang" oninput="syncData()">HINDI, URDU, ENGLISH, ARABIC</textarea>
             </div>
         </div>
 
@@ -213,28 +209,28 @@
         <div class="section-group">
             <h3><i class="fa-solid fa-bullseye"></i> Career Objective</h3>
             <div class="form-control">
-                <textarea id="inObj" oninput="updateCV()">Looking forward an organization that offers a challenging, stimulating, learning environment to work in and provide scope for individual & organizations development, which offers attractive prospects for long term development and career growth.</textarea>
+                <textarea id="inObj" oninput="syncData()">Looking forward an organization that offers a challenging, stimulating, learning environment to work in and provide scope for individual & organizations development, which offers attractive prospects for long term development and career growth.</textarea>
             </div>
         </div>
 
         <div class="section-group">
             <h3><i class="fa-solid fa-graduation-cap"></i> Education Qualification</h3>
             <div class="form-control">
-                <textarea id="inEdu" oninput="updateCV()">Metric</textarea>
+                <textarea id="inEdu" oninput="syncData()">Metric</textarea>
             </div>
         </div>
 
         <div class="section-group">
             <h3><i class="fa-solid fa-briefcase"></i> Work Experience (One per line)</h3>
             <div class="form-control">
-                <textarea id="inExp" style="height: 60px;" oninput="updateCV()">2 years working experience as a Driver of Trucker in UAE</textarea>
+                <textarea id="inExp" style="height: 60px;" oninput="syncData()">2 years working experience as a Driver of Trucker in UAE</textarea>
             </div>
         </div>
 
         <div class="section-group">
             <h3><i class="fa-solid fa-star"></i> Personal Skills (One per line)</h3>
             <div class="form-control">
-                <textarea id="inSkills" style="height: 100px;" oninput="updateCV()">Knowledge of traffic laws and regulations
+                <textarea id="inSkills" style="height: 100px;" oninput="syncData()">Knowledge of traffic laws and regulations
 Navigation
 Alertness and awareness of surroundings
 Good judgment and decision making
@@ -245,7 +241,7 @@ Excellent coordination and control over the vehicle</textarea>
         <div class="section-group">
             <h3><i class="fa-solid fa-bolt"></i> Key Strengths (One per line)</h3>
             <div class="form-control">
-                <textarea id="inStrengths" style="height: 80px;" oninput="updateCV()">Hardworking, confident and result oriented approach
+                <textarea id="inStrengths" style="height: 80px;" oninput="syncData()">Hardworking, confident and result oriented approach
 Passionate for seeking in my performance
 Believe in team work and performance</textarea>
             </div>
@@ -254,208 +250,325 @@ Believe in team work and performance</textarea>
         <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> Print CV / Save as PDF</button>
     </div>
 
-    <!-- RIGHT LIVE PREVIEW CANVAS AREA -->
+    <!-- RIGHT LIVE PREVIEW AREA -->
     <div class="preview-side">
-        <div class="cv-a4-page model-classic" id="cvCanvas">
-            
-            <!-- MODEL 2 HEADER ELEMENT ONLY (Injected visually via CSS states) -->
-            <div class="top-corporate-header">
-                <div>
-                    <div class="candidate-name m2-name">MUHAMMAD AJMAL</div>
-                    <div class="corporate-sub">PROFESSIONAL APPLICATION DOSSIER</div>
+
+        <!-- =======================================================
+           MODEL 1 CANVAS: CLASSIC BLUE RIBBON
+           ======================================================= -->
+        <div class="cv-a4-page active-model" id="model-classic">
+            <div class="m1-sidebar">
+                <div class="m1-photo-banner">
+                    <div class="m1-photo-frame slot-photo"><i class="fa-solid fa-user" style="font-size:4rem; color:#94a3b8;"></i></div>
                 </div>
-                <div class="photo-oval-frame m2-photo-box">
-                    <i class="fa-solid fa-user" style="font-size:2.5rem; color:#64748b;"></i>
+                <div class="m1-contact-list">
+                    <div class="m1-contact-row"><i class="fa-solid fa-phone"></i> <span class="slot-phone"></span></div>
+                    <div class="m1-contact-row"><i class="fa-brands fa-whatsapp"></i> <span class="slot-whatsapp"></span></div>
+                    <div class="m1-contact-row"><i class="fa-solid fa-envelope"></i> <span class="slot-email"></span></div>
+                    <div class="m1-contact-row"><i class="fa-solid fa-location-dot"></i> <span class="slot-loc"></span></div>
+                </div>
+                <div class="m1-sidebar-title">Personal Details</div>
+                <table class="m1-details-table">
+                    <tr><td class="lbl">DOB</td><td style="width:5%">:</td><td class="slot-dob"></td></tr>
+                    <tr><td class="lbl">Sex</td><td>:</td><td class="slot-sex"></td></tr>
+                    <tr><td class="lbl">Nationality</td><td>:</td><td class="slot-nation"></td></tr>
+                    <tr><td class="lbl">Visa Status</td><td>:</td><td class="slot-visa"></td></tr>
+                </table>
+                <div class="m1-sidebar-title">Passport Details</div>
+                <table class="m1-details-table">
+                    <tr><td class="lbl">Passport No</td><td style="width:5%">:</td><td class="slot-passno"></td></tr>
+                    <tr><td class="lbl">Issue Date</td><td>:</td><td class="slot-passissue"></td></tr>
+                    <tr><td class="lbl">Expiry Date</td><td>:</td><td class="slot-passexpiry"></td></tr>
+                </table>
+                <div class="m1-sidebar-title">License Details</div>
+                <div style="font-size:0.7rem; font-weight:bold; margin-bottom:4px;" class="slot-lictitle"></div>
+                <table class="m1-details-table">
+                    <tr><td class="lbl">License No</td><td style="width:5%">:</td><td class="slot-licno"></td></tr>
+                    <tr><td class="lbl">Issue Date</td><td>:</td><td class="slot-licissue"></td></tr>
+                    <tr><td class="lbl">Expiry Date</td><td>:</td><td class="slot-licexpiry"></td></tr>
+                </table>
+                <div class="m1-sidebar-title">Languages Known</div>
+                <ul class="m1-bullets slot-lang" style="width:100%; padding-left:0; list-style:none;"></ul>
+            </div>
+            <div class="m1-main">
+                <div class="m1-header">
+                    <div class="m1-name slot-name"></div>
+                    <div style="font-size:2rem; font-weight:900; opacity:0.2; font-style:italic;">CV</div>
+                </div>
+                <div class="m1-section">
+                    <div class="m1-section-title">Objective</div>
+                    <div class="m1-bullets slot-obj" style="list-style:none; padding-left:0;"></div>
+                </div>
+                <div class="m1-section">
+                    <div class="m1-section-title">Educational Qualification</div>
+                    <div class="m1-bullets slot-edu" style="list-style:none; padding-left:0;"></div>
+                </div>
+                <div class="m1-section">
+                    <div class="m1-section-title">Work Experience</div>
+                    <ul class="m1-bullets slot-exp"></ul>
+                </div>
+                <div class="m1-section">
+                    <div class="m1-section-title">Personal Skills</div>
+                    <ul class="m1-bullets slot-skills"></ul>
+                </div>
+                <div class="m1-section">
+                    <div class="m1-section-title">Key Strengths</div>
+                    <ul class="m1-bullets slot-strengths"></ul>
+                </div>
+                <div class="m1-section dec-box">
+                    <div class="m1-section-title">Declaration</div>
+                    <div style="font-size:0.82rem; line-height:1.4; text-align:justify; font-weight:bold;">I hereby declare that the information furnished above is true to the best of my knowledge and belief.</div>
+                    <div class="sig-row slot-name"></div>
                 </div>
             </div>
-
-            <!-- MODEL 3 HEADER ELEMENT ONLY -->
-            <div class="emerald-top-grid" style="width:100%">
-                <div>
-                    <div class="candidate-name m3-name">MUHAMMAD AJMAL</div>
-                    <p style="font-size:0.85rem; font-weight:bold; color:#065f46; margin-top:5px;">CURRICULUM VITAE</p>
-                </div>
-                <div class="photo-oval-frame m3-photo-box">
-                    <i class="fa-solid fa-user" style="font-size:2.5rem; color:#64748b;"></i>
-                </div>
-            </div>
-
-            <div class="split-container" style="width:100%; height:100%;">
-                
-                <!-- LEFT BAR SPECIFICATION AREA -->
-                <div class="cv-sidebar">
-                    <div class="photo-banner-wrapper">
-                        <div class="photo-oval-frame" id="photoBox">
-                            <i class="fa-solid fa-user" style="font-size:4rem; color:#94a3b8;"></i>
-                        </div>
-                    </div>
-
-                    <div class="contact-info-list">
-                        <div class="contact-row"><i class="fa-solid fa-phone"></i> <span id="outPhone"></span></div>
-                        <div class="contact-row"><i class="fa-brands fa-whatsapp"></i> <span id="outWhatsapp"></span></div>
-                        <div class="contact-row"><i class="fa-solid fa-envelope"></i> <span id="outEmail"></span></div>
-                        <div class="contact-row"><i class="fa-solid fa-location-dot"></i> <span id="outLoc"></span></div>
-                    </div>
-
-                    <div class="sidebar-section-title">Personal Details</div>
-                    <table class="grid-details-table">
-                        <tr><td class="val-label">DOB</td><td style="width:5%">:</td><td id="outDob"></td></tr>
-                        <tr><td class="val-label">Sex</td><td>:</td><td id="outSex"></td></tr>
-                        <tr><td class="val-label">Nationality</td><td>:</td><td id="outNation"></td></tr>
-                        <tr><td class="val-label">Visa Status</td><td>:</td><td id="outVisa"></td></tr>
-                    </table>
-
-                    <div class="sidebar-section-title">Passport Details</div>
-                    <table class="grid-details-table">
-                        <tr><td class="val-label">Passport No</td><td style="width:5%">:</td><td id="outPassNo"></td></tr>
-                        <tr><td class="val-label">Issue Date</td><td>:</td><td id="outPassIssue"></td></tr>
-                        <tr><td class="val-label">Expiry Date</td><td>:</td><td id="outPassExpiry"></td></tr>
-                    </table>
-
-                    <div class="sidebar-section-title">License Details</div>
-                    <div style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; display:block;" id="outLicTitle"></div>
-                    <table class="grid-details-table">
-                        <tr><td class="val-label">License No</td><td style="width:5%">:</td><td id="outLicNo"></td></tr>
-                        <tr><td class="val-label">Issue Date</td><td>:</td><td id="outLicIssue"></td></tr>
-                        <tr><td class="val-label">Expiry Date</td><td>:</td><td id="outLicExpiry"></td></tr>
-                    </table>
-
-                    <div class="sidebar-section-title">Languages Known</div>
-                    <ul class="lang-list" id="outLang"></ul>
-                </div>
-
-                <!-- RIGHT MAIN PROFILE COMPONENT -->
-                <div class="cv-main-body">
-                    <div class="main-top-accent-header">
-                        <div class="candidate-name" id="outName"></div>
-                        <div style="font-size:2rem; font-weight:900; opacity:0.2; font-style:italic;">CV</div>
-                    </div>
-
-                    <div class="body-section">
-                        <div class="body-section-title">Objective</div>
-                        <div class="body-text-block" id="outObj"></div>
-                    </div>
-
-                    <div class="body-section">
-                        <div class="body-section-title">Educational Qualification</div>
-                        <div class="body-text-block" id="outEdu"></div>
-                    </div>
-
-                    <div class="body-section">
-                        <div class="body-section-title">Work Experience</div>
-                        <ul class="bullet-list" id="outExp"></ul>
-                    </div>
-
-                    <div class="body-section">
-                        <div class="body-section-title">Personal Skills</div>
-                        <ul class="bullet-list" id="outSkills"></ul>
-                    </div>
-
-                    <div class="body-section">
-                        <div class="body-section-title">Key Strengths</div>
-                        <ul class="bullet-list" id="outStrengths"></ul>
-                    </div>
-
-                    <div class="body-section declaration-box">
-                        <div class="body-section-title">Declaration</div>
-                        <div class="body-text-block">I hereby declare that the information furnished above is true to the best of my knowledge and belief.</div>
-                        <div class="signature-row" id="outSigName"></div>
-                    </div>
-                </div>
-
-            </div>
-
         </div>
+
+        <!-- =======================================================
+           MODEL 2 CANVAS: MODERN YELLOW & DARK GREY
+           ======================================================= -->
+        <div class="cv-a4-page" id="model-yellow">
+            <div class="m2-sidebar">
+                <div class="m2-photo-frame slot-photo"><i class="fa-solid fa-user" style="font-size:4rem; color:#94a3b8;"></i></div>
+                <div class="m2-name slot-name"></div>
+                <div class="m2-sub">CURRICULUM VITAE</div>
+                
+                <div class="m2-sidebar-title"><i class="fa-solid fa-phone"></i> Contact</div>
+                <div class="m2-contact-list">
+                    <div class="m2-contact-row"><span>Phone:</span><span class="slot-phone" style="color:#fff; font-size:0.8rem;"></span></div>
+                    <div class="m2-contact-row"><span>WhatsApp:</span><span class="slot-whatsapp" style="color:#fff; font-size:0.8rem;"></span></div>
+                    <div class="m2-contact-row"><span>Email:</span><span class="slot-email" style="color:#fff; font-size:0.8rem; text-transform:none;"></span></div>
+                    <div class="m2-contact-row"><span>Location:</span><span class="slot-loc" style="color:#fff; font-size:0.8rem;"></span></div>
+                </div>
+
+                <div class="m2-sidebar-title"><i class="fa-solid fa-language"></i> Languages</div>
+                <ul class="m2-bullets slot-lang"></ul>
+            </div>
+            <div class="m2-main">
+                <div class="m2-section">
+                    <div class="m2-section-title"><i><i class="fa-solid fa-user-tie" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Profile Objective</div>
+                    <div class="m2-body-text slot-obj"></div>
+                </div>
+                <div class="m2-section">
+                    <div class="m2-section-title"><i><i class="fa-solid fa-briefcase" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Experience</div>
+                    <ul class="m2-main-bullets slot-exp"></ul>
+                </div>
+                <div class="m2-section">
+                    <div class="m2-section-title"><i><i class="fa-solid fa-graduation-cap" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Education</div>
+                    <div class="m2-body-text slot-edu"></div>
+                </div>
+                <div class="m2-section">
+                    <div class="m2-section-title"><i><i class="fa-solid fa-gear" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Skills</div>
+                    <ul class="m2-main-bullets slot-skills"></ul>
+                </div>
+                <div class="m2-section">
+                    <div class="m2-section-title"><i><i class="fa-solid fa-bolt" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Key Strengths</div>
+                    <ul class="m2-main-bullets slot-strengths"></ul>
+                </div>
+                <div class="m2-section">
+                    <div class="m2-section-title"><i><i class="fa-solid fa-id-card" style="background:none; color:#1e2530; width:auto; height:auto; font-size:0.85rem;"></i></i> Personal Metrics</div>
+                    <table style="width:100%; font-size:0.8rem; font-weight:bold; color:#4a5568;">
+                        <tr><td style="padding:3px 0; width:30%;">DOB</td><td style="width:5%">:</td><td class="slot-dob"></td><td style="width:30%;">PASSPORT NO</td><td style="width:5%">:</td><td class="slot-passno"></td></tr>
+                        <tr><td style="padding:3px 0;">GENDER</td><td>:</td><td class="slot-sex"></td><td>PASSPORT ISSUE</td><td>:</td><td class="slot-passissue"></td></tr>
+                        <tr><td style="padding:3px 0;">NATIONALITY</td><td>:</td><td class="slot-nation"></td><td>PASSPORT EXPIRY</td><td>:</td><td class="slot-passexpiry"></td></tr>
+                        <tr><td style="padding:3px 0;">VISA STATUS</td><td>:</td><td class="slot-visa"></td><td>LICENSE NO</td><td>:</td><td class="slot-licno"></td></tr>
+                    </table>
+                </div>
+                <div class="m2-section dec-box" style="margin-top:auto;">
+                    <div style="font-size:0.78rem; color:#718096; text-align:justify; font-weight:bold; border-top:1px solid #e2e8f0; padding-top:10px;">I hereby declare that the information furnished above is true to the best of my knowledge and belief.</div>
+                    <div class="sig-row slot-name" style="color:#1a202c;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =======================================================
+           MODEL 3 CANVAS: NIYAS CLEAN DESIGN
+           ======================================================= -->
+        <div class="cv-a4-page" id="model-niyas">
+            <div class="m3-top-grid">
+                <div class="m3-top-left">
+                    <h1 class="slot-name"></h1>
+                    <div class="m3-top-contact">
+                        <div><i class="fa-solid fa-mobile-screen-button"></i> <span class="slot-phone"></span></div>
+                        <div><i class="fa-brands fa-whatsapp" style="color:#22c55e;"></i> <span class="slot-whatsapp"></span></div>
+                        <div><i class="fa-solid fa-envelope"></i> <span class="slot-email" style="text-transform:none;"></span></div>
+                    </div>
+                </div>
+                <div class="m3-photo-frame slot-photo"><i class="fa-solid fa-user" style="font-size:4rem; color:#94a3b8;"></i></div>
+            </div>
+
+            <div class="m3-split-box">
+                <div class="m3-col-left">
+                    <div class="m3-section">
+                        <div class="m3-section-title">OBJECTIVE</div>
+                        <div class="m3-body-text slot-obj"></div>
+                    </div>
+                    <div class="m3-section">
+                        <div class="m3-section-title">WORK EXPERIENCE</div>
+                        <ul class="m3-bullets slot-exp"></ul>
+                    </div>
+                    <div class="m3-section">
+                        <div class="m3-section-title">EDUCATIONAL QUALIFICATION</div>
+                        <div class="m3-body-text slot-edu"></div>
+                    </div>
+                    <div class="m3-section">
+                        <div class="m3-section-title">KEY STRENGTHS</div>
+                        <ul class="m3-bullets slot-strengths"></ul>
+                    </div>
+                    <div class="m3-section">
+                        <div class="m3-section-title">LICENSE DETAILS</div>
+                        <div style="font-size:0.8rem; font-weight:bold; margin-bottom:5px; color:#2b6cb0;" class="slot-lictitle"></div>
+                        <table class="m3-table">
+                            <tr><td class="lbl">LICENSE NO</td><td style="width:5%">:</td><td class="slot-licno"></td></tr>
+                            <tr><td class="lbl">DATE OF ISSUE</td><td>:</td><td class="slot-licissue"></td></tr>
+                            <tr><td class="lbl">DATE OF EXPIRE</td><td>:</td><td class="slot-licexpiry"></td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="m3-col-right">
+                    <div class="m3-section">
+                        <div class="m3-section-title">PERSONAL SKILLS</div>
+                        <ul class="m3-bullets slot-skills"></ul>
+                    </div>
+                    <div class="m3-section">
+                        <div class="m3-section-title">LANGUAGES KNOWN</div>
+                        <ul class="m3-bullets slot-lang" style="list-style:none; padding-left:0;"></ul>
+                    </div>
+                    <div class="m3-section">
+                        <div class="m3-section-title">PERSONAL DETAILS</div>
+                        <table class="m3-table">
+                            <tr><td class="lbl">DOB</td><td style="width:5%">:</td><td class="slot-dob"></td></tr>
+                            <tr><td class="lbl">SEX</td><td>:</td><td class="slot-sex"></td></tr>
+                            <tr><td class="lbl">NATIONALITY</td><td>:</td><td class="slot-nation"></td></tr>
+                            <tr><td class="lbl">MARITAL STATUS</td><td>:</td><td>SINGLE</td></tr>
+                        </table>
+                    </div>
+                    <div class="m3-section">
+                        <div class="m3-section-title">PASSPORT DETAILS</div>
+                        <table class="m3-table">
+                            <tr><td class="lbl">PASSPORT NO</td><td style="width:5%">:</td><td class="slot-passno"></td></tr>
+                            <tr><td class="lbl">DATE OF ISSUE</td><td>:</td><td class="slot-passissue"></td></tr>
+                            <tr><td class="lbl">DATE OF EXPIRE</td><td>:</td><td class="slot-passexpiry"></td></tr>
+                            <tr><td class="lbl">VISA STATUS</td><td>:</td><td class="slot-visa"></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="m3-section dec-box" style="margin-top:20px;">
+                <div class="m3-section-title">DECLARATION</div>
+                <div class="m3-body-text">I hereby declare that the information furnished above is true to the best of my knowledge and belief.</div>
+                <div class="sig-row slot-name" style="color:#000;"></div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- CODE CONTROLLER ENGINE MODULE -->
+    <!-- CODE CONTROLLER ENGINE -->
     <script>
-        let globalPhotoBase64 = "";
+        let savedPhotoData = "";
 
-        function changeCVModel(selectedModel) {
-            const canvas = document.getElementById('cvCanvas');
-            canvas.className = "cv-a4-page " + selectedModel;
+        function switchModel(modelId) {
+            // Hide all models first cleanly
+            document.querySelectorAll('.cv-a4-page').forEach(page => {
+                page.classList.remove('active-model');
+            });
+            // Show only selected model container
+            document.getElementById(modelId).classList.add('active-model');
         }
 
-        function updateCV() {
-            const nameVal = document.getElementById('inName').value.toUpperCase();
+        function syncData() {
+            const name = document.getElementById('inName').value.toUpperCase();
+            const phone = document.getElementById('inPhone').value;
+            const whatsapp = document.getElementById('inWhatsapp').value;
+            const email = document.getElementById('inEmail').value;
+            const loc = document.getElementById('inLoc').value.toUpperCase();
             
-            // Sync names all placeholders matrix
-            document.getElementById('outName').innerText = nameVal;
-            document.getElementById('outSigName').innerText = nameVal;
-            document.querySelector('.m2-name').innerText = nameVal;
-            document.querySelector('.m3-name').innerText = nameVal;
+            const dob = document.getElementById('inDob').value;
+            const sex = document.getElementById('inSex').value.toUpperCase();
+            const nation = document.getElementById('inNation').value.toUpperCase();
+            const visa = document.getElementById('inVisa').value.toUpperCase();
             
-            // Sync text inputs lines
-            document.getElementById('outPhone').innerText = document.getElementById('inPhone').value;
-            document.getElementById('outWhatsapp').innerText = document.getElementById('inWhatsapp').value;
-            document.getElementById('outEmail').innerText = document.getElementById('inEmail').value;
-            document.getElementById('outLoc').innerText = document.getElementById('inLoc').value.toUpperCase();
+            const passno = document.getElementById('inPassNo').value.toUpperCase();
+            const passissue = document.getElementById('inPassIssue').value;
+            const passexpiry = document.getElementById('inPassExpiry').value;
             
-            document.getElementById('outDob').innerText = document.getElementById('inDob').value.toUpperCase();
-            document.getElementById('outSex').innerText = document.getElementById('inSex').value.toUpperCase();
-            document.getElementById('outNation').innerText = document.getElementById('inNation').value.toUpperCase();
-            document.getElementById('outVisa').innerText = document.getElementById('inVisa').value.toUpperCase();
+            const lictitle = document.getElementById('inLicTitle').value.toUpperCase();
+            const licno = document.getElementById('inLicNo').value.toUpperCase();
+            const licissue = document.getElementById('inLicIssue').value;
+            const licexpiry = document.getElementById('inLicExpiry').value;
             
-            document.getElementById('outPassNo').innerText = document.getElementById('inPassNo').value.toUpperCase();
-            document.getElementById('outPassIssue').innerText = document.getElementById('inPassIssue').value.toUpperCase();
-            document.getElementById('outPassExpiry').innerText = document.getElementById('inPassExpiry').value.toUpperCase();
-            
-            document.getElementById('outLicTitle').innerText = document.getElementById('inLicTitle').value.toUpperCase();
-            document.getElementById('outLicNo').innerText = document.getElementById('inLicNo').value.toUpperCase();
-            document.getElementById('outLicIssue').innerText = document.getElementById('inLicIssue').value.toUpperCase();
-            document.getElementById('outLicExpiry').innerText = document.getElementById('inLicExpiry').value.toUpperCase();
-            
-            document.getElementById('outObj').innerText = document.getElementById('inObj').value;
-            document.getElementById('outEdu').innerText = document.getElementById('inEdu').value;
+            const objText = document.getElementById('inObj').value.toUpperCase();
+            const eduText = document.getElementById('inEdu').value.toUpperCase();
 
-            // Arrays splitter lists parser
-            parseLanguages();
-            parseBulletLists('inExp', 'outExp');
-            parseBulletLists('inSkills', 'outSkills');
-            parseBulletLists('inStrengths', 'outStrengths');
+            // Injecting to all active slots cleanly using classes
+            fillSlots('.slot-name', name);
+            fillSlots('.slot-phone', phone);
+            fillSlots('.slot-whatsapp', whatsapp);
+            fillSlots('.slot-email', email);
+            fillSlots('.slot-loc', loc);
+            fillSlots('.slot-dob', dob);
+            fillSlots('.slot-sex', sex);
+            fillSlots('.slot-nation', nation);
+            fillSlots('.slot-visa', visa);
+            fillSlots('.slot-passno', passno);
+            fillSlots('.slot-passissue', passissue);
+            fillSlots('.slot-passexpiry', passexpiry);
+            fillSlots('.slot-lictitle', lictitle);
+            fillSlots('.slot-licno', licno);
+            fillSlots('.slot-licissue', licissue);
+            fillSlots('.slot-licexpiry', licexpiry);
+            
+            fillSlots('.slot-obj', objText);
+            fillSlots('.slot-edu', eduText);
+
+            // Lists Parser Matrix
+            parseToBullets('#inLang', '.slot-lang', true);
+            parseToBullets('#inExp', '.slot-exp', false);
+            parseToBullets('#inSkills', '.slot-skills', false);
+            parseToBullets('#inStrengths', '.slot-strengths', false);
         }
 
-        function parseLanguages() {
-            const raw = document.getElementById('inLang').value;
-            const container = document.getElementById('outLang');
-            container.innerHTML = '';
-            raw.split(',').forEach(item => {
-                if(item.trim() !== '') {
-                    container.innerHTML += `<li>• ${item.trim().toUpperCase()}</li>`;
-                }
+        function fillSlots(className, value) {
+            document.querySelectorAll(className).forEach(el => {
+                el.innerText = value;
             });
         }
 
-        function parseBulletLists(inputId, outputId) {
-            const raw = document.getElementById(inputId).value;
-            const container = document.getElementById(outputId);
-            container.innerHTML = '';
-            raw.split('\n').forEach(line => {
-                if(line.trim() !== '') {
-                    container.innerHTML += `<li>${line.trim()}</li>`;
-                }
+        function parseToBullets(textareaId, outputClass, isCommaSeparated) {
+            const val = document.getElementById(textareaId).value;
+            const targetLists = document.querySelectorAll(outputClass);
+            
+            targetLists.forEach(listContainer => {
+                listContainer.innerHTML = '';
+                let items = isCommaSeparated ? val.split(',') : val.split('\n');
+                
+                items.forEach(item => {
+                    if(item.trim() !== '') {
+                        let li = document.createElement('li');
+                        li.innerText = item.trim().toUpperCase();
+                        listContainer.appendChild(li);
+                    }
+                });
             });
         }
 
-        function previewImage(input) {
+        function processPhoto(input) {
             const file = input.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    globalPhotoBase64 = e.target.result;
-                    
-                    // Inject photo to all 3 model boxes placeholders dynamically
-                    document.getElementById('photoBox').innerHTML = `<img src="${globalPhotoBase64}" alt="Profile">`;
-                    document.querySelector('.m2-photo-box').innerHTML = `<img src="${globalPhotoBase64}" alt="Profile">`;
-                    document.querySelector('.m3-photo-box').innerHTML = `<img src="${globalPhotoBase64}" alt="Profile">`;
+                    savedPhotoData = e.target.result;
+                    document.querySelectorAll('.slot-photo').forEach(frame => {
+                        frame.innerHTML = `<img src="${savedPhotoData}" alt="CV Photo">`;
+                    });
                 }
                 reader.readAsDataURL(file);
             }
         }
 
-        // Initialize components flow execution
-        updateCV();
+        // Boot flow elements execution
+        syncData();
     </script>
 </body>
 </html>
