@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATAVA CV Studio - Model 1 Only</title>
+    <title>ATAVA CV Studio - Model 1 Fixed</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; text-transform: uppercase; }
@@ -309,7 +309,7 @@ Good observation and active listening</textarea>
             fillSlots('.slot-obj', objText);
             fillSlots('.slot-edu', eduText);
 
-            // Lists Parser Matrix
+            // Lists Parser Matrix (FIXED: Using standard document.querySelector inside)
             parseToBullets('#inLang', '.slot-lang', true);
             parseToBullets('#inExp', '.slot-exp', false);
             parseToBullets('#inSkills', '.slot-skills', false);
@@ -322,8 +322,11 @@ Good observation and active listening</textarea>
             });
         }
 
-        function parseToBullets(textareaId, outputClass, isCommaSeparated) {
-            const val = document.getElementById(textareaId).value;
+        function parseToBullets(textareaSelector, outputClass, isCommaSeparated) {
+            const textarea = document.querySelector(textareaSelector);
+            if (!textarea) return;
+            
+            const val = textarea.value;
             const targetLists = document.querySelectorAll(outputClass);
             
             targetLists.forEach(listContainer => {
